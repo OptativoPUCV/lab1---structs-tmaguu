@@ -104,23 +104,34 @@ Descripción: Escribe una función que tome un arreglo y su tamaño,
 y luego devuelva 1 si el arreglo está ordenado en orden ascendente,
   0 si no está ordenado, y -1 si está ordenado en orden descendente.
 */
-int checkSorted(int arr[], int size) 
-{ 
+int checkSorted(int arr[], int size)
+{
+  int ascendente = 1;
+  int descendente = 1;
   for (int i = 0; i < size - 1; i++)
     {
       if (arr[i] > arr[i + 1])
       {
-        return 1;
+        ascendente = 0;
       }
-      
-      else if (arr[i] < arr[i + 1])
+      if (arr[i] < arr[i + 1])
       {
-        return -1;
+        descendente = 0;
       }
     }
+  if (ascendente == 1)
+  {
+    return 1;
+  }
+  else
+  {
+    if (descendente == 1)
+    {
+      return -1;
+    }
+  }
   return 0;
 }
-
 /*
 Ejercicio 6: Información de una Biblioteca
 Descripción: Vamos a representar la información de una biblioteca. En la
@@ -140,8 +151,13 @@ typedef struct {
   int anioPublicacion;
 } Libro;
 
-void inicializarLibro(Libro *libro, const char *titulo, const char *nombreAutor,
-                      int anioNacimiento, int anioPublicacion) {}
+void inicializarLibro(Libro *libro, const char *titulo, const char *nombreAutor, int anioNacimiento, int anioPublicacion) 
+{
+  strcpy(libro->titulo, titulo);
+  strcpy(libro->autor.nombre, nombreAutor);
+  libro->autor.anioNacimiento = anioNacimiento;
+  libro->anioPublicacion = anioPublicacion;
+}
 
 /*
 Ejercicio 7: Lista enlazada de números
@@ -152,11 +168,33 @@ mismo orden que los números aparecen en el arreglo. El último nodo de la lista
 debe apuntar a NULL. La función debe devolver un puntero al primer nodo de la
 lista enlazada.
 Recuerda reservar memoria dinámica para cada nodo usando malloc.
-  */
+*/
 
 typedef struct nodo {
   int numero;
   struct nodo *siguiente; // puntero al siguiente nodo
 } Nodo;
 
-Nodo *crearListaEnlazada(int arr[], int size) { return NULL; }
+Nodo *crearListaEnlazada(int arr[], int size) 
+{
+  Nodo *cabeza = NULL;
+  Nodo *ultimo = NULL;
+  for (int i = 0; i < size; i++)
+    {
+      Nodo *nuevoNodo = (Nodo *)malloc(sizeof(Nodo));
+      nuevoNodo->numero = arr[i];
+      nuevoNodo->siguiente = NULL;
+      if (cabeza == NULL)
+      {
+        cabeza = nuevoNodo;
+        ultimo = nuevoNodo;
+      }
+      else
+      {
+        ultimo->siguiente = nuevoNodo;
+        ultimo = nuevoNodo;
+      }
+    }
+  return cabeza;
+  return NULL;
+}
